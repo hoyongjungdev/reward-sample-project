@@ -1,6 +1,7 @@
 package com.example.musinsasample.domain.entity;
 
 import com.example.musinsasample.domain.value.ConsecutiveDay;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -9,6 +10,8 @@ import java.util.Map;
 public class User {
     private Integer id;
     private final String username;
+
+    @Getter
     private Integer point;
 
     private final Map<Integer, Integer> rewardForConsecutive = new HashMap<>(Map.of(
@@ -65,9 +68,5 @@ public class User {
         }
 
         return amount;
-    }
-
-    public int getPoint() {
-        return point;
     }
 }

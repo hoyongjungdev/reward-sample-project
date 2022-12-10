@@ -14,6 +14,8 @@ public class RewardHistory {
 
     @Getter
     private final Integer amount;
+
+    @Getter
     private final ConsecutiveDay consecutiveDay;
 
     public RewardHistory(Integer id, LocalDate date, Integer userId, Integer amount, ConsecutiveDay consecutiveDay) {
@@ -29,9 +31,5 @@ public class RewardHistory {
         this.userId = userId;
         this.amount = amount;
         this.consecutiveDay = consecutiveDay;
-    }
-
-    public ConsecutiveDay getConsecutiveDay() {
-        return consecutiveDay;
     }
 }
