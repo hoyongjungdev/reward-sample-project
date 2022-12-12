@@ -1,24 +1,26 @@
 package com.example.musinsasample;
 
-import com.example.musinsasample.infra.TimeProvider;
+import com.example.musinsasample.application.IssueRewardRequest;
+import com.example.musinsasample.application.SuccessResponse;
+import com.example.musinsasample.domain.service.RewardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Instant;
 
 @RestController
 @RequiredArgsConstructor
 @Log4j2
 public class RewardController {
 
-    private final TimeProvider timeProvider;
+    private final RewardService rewardService;
 
-    @GetMapping("/")
-    public void hello() {
-        Instant time = timeProvider.now();
+    @PostMapping("/reward")
+    public SuccessResponse issueReward(@Valid @RequestBody IssueRewardRequest request) {
+        rewardService.claimReward();
 
-        log.info(time.toString());
+        return new SuccessResponse(true);
     }
 }
