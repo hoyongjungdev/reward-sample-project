@@ -1,33 +1,39 @@
 package com.example.musinsasample.domain.entity;
 
 import com.example.musinsasample.domain.value.ConsecutiveDay;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "reward_histories")
 public class RewardHistory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Getter
-    private final LocalDate date;
-    private final Integer userId;
+    private LocalDate rewardDate;
+    private Integer userId;
 
     @Getter
-    private final Integer amount;
+    private Integer amount;
 
     @Getter
-    private final ConsecutiveDay consecutiveDay;
+    @Embedded
+    private ConsecutiveDay consecutiveDay;
 
-    public RewardHistory(Integer id, LocalDate date, Integer userId, Integer amount, ConsecutiveDay consecutiveDay) {
-        this.id = id;
-        this.date = date;
-        this.userId = userId;
-        this.amount = amount;
-        this.consecutiveDay = consecutiveDay;
+    protected RewardHistory() {
     }
 
-    public RewardHistory(LocalDate date, Integer userId, Integer amount, ConsecutiveDay consecutiveDay) {
-        this.date = date;
+    public RewardHistory(LocalDate rewardDate, Integer userId, Integer amount, ConsecutiveDay consecutiveDay) {
+        this.rewardDate = rewardDate;
         this.userId = userId;
         this.amount = amount;
         this.consecutiveDay = consecutiveDay;

@@ -19,7 +19,10 @@ public class RewardController {
 
     @PostMapping("/reward")
     public SuccessResponse issueReward(@Valid @RequestBody IssueRewardRequest request) {
-        rewardService.claimReward();
+        int userId = request.userId();
+
+        rewardService.checkIfUserReceivedReward(userId);
+        rewardService.issueReward(userId);
 
         return new SuccessResponse(true);
     }
