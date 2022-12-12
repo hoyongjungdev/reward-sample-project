@@ -16,7 +16,7 @@ import java.time.ZoneOffset;
 public class TimeProvider {
     private final JdbcTemplate jdbcTemplate;
 
-    public LocalDate date() {
+    public LocalDate getDate() {
         return LocalDate.ofInstant(now(), ZoneId.of("+9"));
     }
 

@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface RewardCountRepository extends CrudRepository<RewardCount, Integer> {
+    boolean existsByRewardDate(LocalDate rewardDate);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select rc from RewardCount rc where rc.rewardDate = :date")
     Optional<RewardCount> getRewardCountForUpdate(LocalDate date);

@@ -6,8 +6,8 @@ import com.example.musinsasample.domain.entity.User;
 import com.example.musinsasample.domain.repository.RewardCountRepository;
 import com.example.musinsasample.domain.repository.RewardHistoryRepository;
 import com.example.musinsasample.exception.DuplicateRewardException;
-import com.example.musinsasample.infra.TimeProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,35 +20,34 @@ public class RewardService {
     private final RewardCountRepository rewardCountRepository;
     private final RewardHistoryRepository rewardHistoryRepository;
 
-    private final TimeProvider timeProvider;
-
-    public void checkIfUserReceivedReward(int userId) {
-        LocalDate today = timeProvider.date();
-
+    public void checkIfUserReceivedReward(int userId, LocalDate today) {
         if (rewardHistoryRepository.existsByRewardDateAndUserId(today, userId)) {
             throw new DuplicateRewardException();
         }
     }
 
-    @Transactional
-    public void issueReward(int userId) {
-        LocalDate today = timeProvider.date();
+    public void createRewardCount(LocalDate today) {
+        if (rewardCountRepository.existsByRewardDate(today)) {
+            return;
+        }
 
+        try {
+            RewardCount rewardCountCreated = new RewardCount(today);
+            rewardCountRepository.save(rewardCountCreated);
+        } catch (DataIntegrityViolationException e) {
+            // ignore
+        }
+    }
+
+    @Transactional
+    public void issueReward(int userId, LocalDate today) {
         claimReward(today);
         createRewardHistory(userId, today);
     }
 
     private void claimReward(LocalDate today) {
-        RewardCount rewardCount = rewardCountRepository.getRewardCountForUpdate(today).orElseGet(
-                () -> {
-                    RewardCount rewardCountCreated = new RewardCount(today);
-                    rewardCountRepository.save(rewardCountCreated);
-
-                    // pessimistic lock을 위해 다시 조회
-                    return rewardCountRepository.getRewardCountForUpdate(today).get();
-                }
-        );
-
+        // rewardCount가 항상 존재함
+        RewardCount rewardCount = rewardCountRepository.getRewardCountForUpdate(today).get();
         rewardCount.increaseRewardClaimed();
     }
 
