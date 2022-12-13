@@ -1,0 +1,42 @@
+openapi: "3.0.2"
+info:
+  title: API Title
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /notifications:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+
+components:
+  schemas:
+    Notification:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              descriptions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    line:
+                      type: string
+                    subline:
+                      type: array
+                      items:
+                        type: string
