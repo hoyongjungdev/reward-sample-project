@@ -20,7 +20,7 @@ public class RewardHistory {
 
     @Getter
     private LocalDate rewardDate;
-    private Integer userId;
+    private String username;
 
     @Getter
     private Integer amount;
@@ -32,9 +32,9 @@ public class RewardHistory {
     protected RewardHistory() {
     }
 
-    public RewardHistory(LocalDate rewardDate, Integer userId, Integer amount, ConsecutiveDay consecutiveDay) {
+    public RewardHistory(LocalDate rewardDate, String username, Integer amount, ConsecutiveDay consecutiveDay) {
         this.rewardDate = rewardDate;
-        this.userId = userId;
+        this.username = username;
         this.amount = amount;
         this.consecutiveDay = consecutiveDay;
     }

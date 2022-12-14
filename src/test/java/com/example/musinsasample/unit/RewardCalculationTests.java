@@ -28,7 +28,7 @@ class RewardCalculationTests {
         User user = new User(1, "my_user", 100);
         RewardHistory rewardHistory = new RewardHistory(
                 LocalDate.of(2022, 11, 5),
-                1,
+                "my_user",
                 100,
                 new ConsecutiveDay(1)
         );
@@ -48,7 +48,7 @@ class RewardCalculationTests {
         User user = new User(1, "my_user", 200);
         RewardHistory rewardHistory = new RewardHistory(
                 LocalDate.of(2022, 11, 5),
-                1,
+                "my_user",
                 100,
                 new ConsecutiveDay(2)
         );
@@ -68,7 +68,7 @@ class RewardCalculationTests {
         User user = new User(1, "my_user", 1500);
         RewardHistory rewardHistory = new RewardHistory(
                 LocalDate.of(2022, 11, 30),
-                1,
+                "my_user",
                 400,
                 new ConsecutiveDay(3)
         );

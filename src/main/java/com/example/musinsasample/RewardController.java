@@ -5,7 +5,6 @@ import com.example.musinsasample.application.SuccessResponse;
 import com.example.musinsasample.domain.service.RewardService;
 import com.example.musinsasample.infra.TimeProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.ClassPathResource;
@@ -29,14 +28,14 @@ public class RewardController {
     private final TimeProvider timeProvider;
 
     @PostMapping("/rewards")
-    public SuccessResponse issueReward(@Valid @RequestBody IssueRewardRequest request) {
-        int userId = request.userId();
+    public SuccessResponse issueReward(@RequestBody IssueRewardRequest request) {
+        String username = request.username();
 
         LocalDate today = timeProvider.getDate();
 
-        rewardService.checkIfUserReceivedReward(userId, today);
+        rewardService.checkIfUserReceivedReward(username, today);
         rewardService.createRewardCount(today);
-        rewardService.issueReward(userId, today);
+        rewardService.issueReward(username, today);
 
         return new SuccessResponse(true);
     }

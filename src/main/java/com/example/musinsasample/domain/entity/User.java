@@ -54,7 +54,7 @@ public class User {
             int amount = calculateRewardAmount(consecutiveDay);
             point += amount;
 
-            return new RewardHistory(date, id, amount, consecutiveDay);
+            return new RewardHistory(date, username, amount, consecutiveDay);
         } else {
             return rewardWithDayOne(date);
         }
@@ -66,7 +66,7 @@ public class User {
         int amount = calculateRewardAmount(day);
         point += amount;
 
-        return new RewardHistory(date, id, amount, day);
+        return new RewardHistory(date, username, amount, day);
     }
 
     private int calculateRewardAmount(ConsecutiveDay consecutiveDay) {

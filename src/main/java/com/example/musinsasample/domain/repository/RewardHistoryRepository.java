@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface RewardHistoryRepository extends CrudRepository<RewardHistory, Integer> {
-    boolean existsByRewardDateAndUserId(LocalDate rewardDate, int userId);
+    boolean existsByRewardDateAndUsername(LocalDate rewardDate, String username);
 
-    Optional<RewardHistory> getFirstByUserIdOrderByRewardDateDesc(int userId);
+    Optional<RewardHistory> getFirstByUsernameOrderByRewardDateDesc(String username);
 }

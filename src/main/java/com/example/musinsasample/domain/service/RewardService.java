@@ -20,8 +20,8 @@ public class RewardService {
     private final RewardCountRepository rewardCountRepository;
     private final RewardHistoryRepository rewardHistoryRepository;
 
-    public void checkIfUserReceivedReward(int userId, LocalDate today) {
-        if (rewardHistoryRepository.existsByRewardDateAndUserId(today, userId)) {
+    public void checkIfUserReceivedReward(String username, LocalDate today) {
+        if (rewardHistoryRepository.existsByRewardDateAndUsername(today, username)) {
             throw new DuplicateRewardException();
         }
     }
@@ -40,9 +40,9 @@ public class RewardService {
     }
 
     @Transactional
-    public void issueReward(int userId, LocalDate today) {
+    public void issueReward(String username, LocalDate today) {
         claimReward(today);
-        createRewardHistory(userId, today);
+        createRewardHistory(username, today);
     }
 
     private void claimReward(LocalDate today) {
@@ -51,11 +51,11 @@ public class RewardService {
         rewardCount.increaseRewardClaimed();
     }
 
-    private void createRewardHistory(int userId, LocalDate today) {
-        User user = new User(userId, "", 0);
+    private void createRewardHistory(String username, LocalDate today) {
+        User user = new User(1, username, 0);
 
         Optional<RewardHistory> recentRewardHistoryOptional
-                = rewardHistoryRepository.getFirstByUserIdOrderByRewardDateDesc(userId);
+                = rewardHistoryRepository.getFirstByUsernameOrderByRewardDateDesc(username);
 
         RewardHistory rewardHistoryCreated;
 
