@@ -32,31 +32,27 @@ paths:
                   type: string
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+          $ref: '#/components/responses/200Success'
         '400':
-          description: 검증 예외 발생
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  status:
-                    type: string
-                    description: HTTP status
-                  code:
-                    $ref: '#/components/schemas/ErrorCode'
-                  message:
-                    type: string
-                    description: 에러 메시지
+          $ref: '#/components/responses/400BadRequest'
+  /users:
+    post:
+      description: |
+        - createUser
+        - 사용자 생성
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/200Success'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
 
 components:
   schemas:
@@ -88,6 +84,36 @@ components:
       enum:
         - DUPLICATE_REWARD
         - REWARD_EXHAUSTED
+        - DUPLICATE_USERNAME
       description: |
-         * `DUPLICATE_REWARD` - 이미 보상을 지급 받은 경우
-         * `REWARD_EXHAUSTED` - 오늘의 보상이 모두 소진된 경우
+        * `DUPLICATE_REWARD` - 이미 보상을 지급 받은 경우
+        * `REWARD_EXHAUSTED` - 오늘의 보상이 모두 소진된 경우
+        * `DUPLICATE_USERNAME` - 이미 존재하는 username인 경우
+  responses:
+    200Success:
+      description: 성공
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+    400BadRequest:
+      description: 검증 예외 발생
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              status:
+                type: string
+                description: HTTP status
+              code:
+                $ref: '#/components/schemas/ErrorCode'
+              message:
+                type: string
+                description: 에러 메시지
