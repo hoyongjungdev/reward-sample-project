@@ -14,6 +14,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {BaseException.class})
     protected ResponseEntity<ErrorResponse> handleException(BaseException exception) {
         log.error("Exception : {}", exception.getErrorCode());
-        return ErrorResponse.toResponseEntity(exception.getErrorCode());
+        return ErrorResponse.toResponseEntity(exception);
     }
 }
