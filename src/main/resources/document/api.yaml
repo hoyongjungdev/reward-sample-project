@@ -85,10 +85,12 @@ components:
         - DUPLICATE_REWARD
         - REWARD_EXHAUSTED
         - DUPLICATE_USERNAME
+        - VALIDATION_ERROR
       description: |
         * `DUPLICATE_REWARD` - 이미 보상을 지급 받은 경우
         * `REWARD_EXHAUSTED` - 오늘의 보상이 모두 소진된 경우
         * `DUPLICATE_USERNAME` - 이미 존재하는 username인 경우
+        * `VALIDATION_ERROR` - 입력 검증에 실패한 경우
   responses:
     200Success:
       description: 성공

@@ -1,8 +1,10 @@
 package com.example.musinsasample;
 
+import com.example.musinsasample.application.CreateUserRequest;
 import com.example.musinsasample.application.IssueRewardRequest;
 import com.example.musinsasample.application.SuccessResponse;
 import com.example.musinsasample.domain.service.RewardService;
+import com.example.musinsasample.domain.service.UserService;
 import com.example.musinsasample.infra.TimeProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +26,11 @@ import java.time.LocalDate;
 public class RewardController {
 
     private final RewardService rewardService;
+    private final UserService userService;
 
     private final TimeProvider timeProvider;
 
-    @PostMapping("/rewards")
+    @PostMapping("rewards")
     public SuccessResponse issueReward(@RequestBody IssueRewardRequest request) {
         String username = request.username();
 
@@ -50,6 +53,12 @@ public class RewardController {
             e.printStackTrace();
         }
         return null;
+    }
 
+    @PostMapping("users")
+    public SuccessResponse createUser(@RequestBody CreateUserRequest request) {
+        userService.createUser(request.username());
+
+        return new SuccessResponse(true);
     }
 }
