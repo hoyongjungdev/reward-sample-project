@@ -28,7 +28,7 @@ public class RewardController {
 
     private final TimeProvider timeProvider;
 
-    @PostMapping("/reward")
+    @PostMapping("/rewards")
     public SuccessResponse issueReward(@Valid @RequestBody IssueRewardRequest request) {
         int userId = request.userId();
 
