@@ -5,7 +5,9 @@ import com.example.musinsasample.domain.entity.RewardHistory;
 import com.example.musinsasample.domain.entity.User;
 import com.example.musinsasample.domain.repository.RewardCountRepository;
 import com.example.musinsasample.domain.repository.RewardHistoryRepository;
+import com.example.musinsasample.domain.repository.UserRepository;
 import com.example.musinsasample.exception.DuplicateRewardException;
+import com.example.musinsasample.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class RewardService {
     private final RewardCountRepository rewardCountRepository;
     private final RewardHistoryRepository rewardHistoryRepository;
+    private final UserRepository userRepository;
 
     public void checkIfUserReceivedReward(String username, LocalDate today) {
         if (rewardHistoryRepository.existsByRewardDateAndUsername(today, username)) {
@@ -41,8 +44,9 @@ public class RewardService {
 
     @Transactional
     public void issueReward(String username, LocalDate today) {
+        User user = getUserOrThrow(username);
         claimReward(today);
-        createRewardHistory(username, today);
+        createRewardHistory(user, today);
     }
 
     private void claimReward(LocalDate today) {
@@ -51,11 +55,9 @@ public class RewardService {
         rewardCount.increaseRewardClaimed();
     }
 
-    private void createRewardHistory(String username, LocalDate today) {
-        User user = new User(1, username, 0);
-
+    private void createRewardHistory(User user, LocalDate today) {
         Optional<RewardHistory> recentRewardHistoryOptional
-                = rewardHistoryRepository.getFirstByUsernameOrderByRewardDateDesc(username);
+                = rewardHistoryRepository.getFirstByUsernameOrderByRewardDateDesc(user.getUsername());
 
         RewardHistory rewardHistoryCreated;
 
@@ -66,5 +68,11 @@ public class RewardService {
         }
 
         rewardHistoryRepository.save(rewardHistoryCreated);
+    }
+
+    private User getUserOrThrow(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> {
+            throw new UserNotFoundException();
+        });
     }
 }
