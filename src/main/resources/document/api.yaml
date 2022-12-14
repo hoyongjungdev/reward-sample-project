@@ -7,6 +7,9 @@ servers:
 paths:
   /notifications:
     get:
+      description: |
+        - getNotifications
+        - 보상 데이터 상세 조회
       responses:
         '200':
           description: OK
@@ -14,6 +17,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Notification'
+  /rewards:
+    post:
+      description: |
+        - issueReward
+        - 보상 지급 받기
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: 검증 예외 발생
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  status:
+                    type: string
+                    description: HTTP status
+                  code:
+                    $ref: '#/components/schemas/ErrorCode'
+                  message:
+                    type: string
+                    description: 에러 메시지
 
 components:
   schemas:
@@ -40,3 +83,11 @@ components:
                       type: array
                       items:
                         type: string
+    ErrorCode:
+      type: string
+      enum:
+        - DUPLICATE_REWARD
+        - REWARD_EXHAUSTED
+      description: |
+         * `DUPLICATE_REWARD` - 이미 보상을 지급 받은 경우
+         * `REWARD_EXHAUSTED` - 오늘의 보상이 모두 소진된 경우
