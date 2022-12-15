@@ -10,6 +10,8 @@ function Home() {
         descriptions: []
     });
 
+    const [username, setUsername] = useState("");
+
     useEffect(() => {
         axios.get(SERVER_HOST + "/notifications")
             .then(function (response) {
@@ -24,6 +26,26 @@ function Home() {
             });
     }, []);
 
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        axios.post(SERVER_HOST + '/rewards', {
+            username: username
+        }).then(function (response) {
+            if (response.data['success']) {
+                alert('성공');
+            } else {
+                alert('실패');
+            }
+        }).catch(function (error) {
+            if (error.response) {
+                alert('실패\n' + error.response.data['message'])
+            } else {
+                alert('실패\n' + error.toString());
+            }
+        });
+    }
+
     return (
         <div>
             <Header/>
@@ -37,6 +59,18 @@ function Home() {
                     </li>
                 )}
             </ul>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        value={username}
+                        placeholder="ID"
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+
+                    <button type="submit">보상 지급 받기</button>
+                </form>
+            </div>
         </div>
     );
 }
