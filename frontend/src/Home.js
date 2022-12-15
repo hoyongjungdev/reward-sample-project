@@ -30,9 +30,9 @@ function Home() {
             <h2>{notification.title}</h2>
             <ul>
                 {notification.descriptions.map(
-                    (d, idx) => <li key={idx}>{d.line}
-                        <ul>{d.subline.map(
-                            (s, idx) => <li key={idx}>{s}</li>
+                    (description, idx) => <li key={idx}>{description.line}
+                        <ul>{description.subline.map(
+                            (subline, idx) => <li key={idx}>{subline}</li>
                         )}</ul>
                     </li>
                 )}
