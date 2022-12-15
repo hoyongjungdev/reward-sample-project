@@ -83,6 +83,7 @@ function History() {
                     <button type="submit">조회하기</button>
                 </form>
                 <div>
+                    {rewardHistories.length === 0 && <p>데이터가 없습니다.</p>}
                     {rewardHistories.length > 0 &&
                     <table id="reward_histories">
                         <thead>
