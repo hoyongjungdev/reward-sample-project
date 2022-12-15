@@ -73,7 +73,7 @@ public class RewardService {
 
     private void createRewardHistory(User user, LocalDateTime now) {
         Optional<RewardHistory> recentRewardHistoryOptional
-                = rewardHistoryRepository.getFirstByUsernameOrderByIssuedAt(user.getUsername());
+                = rewardHistoryRepository.getFirstByUsernameOrderByIssuedAtDesc(user.getUsername());
 
         RewardHistory rewardHistoryCreated;
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface RewardHistoryRepository extends CrudRepository<RewardHistory, Integer> {
     boolean existsByIssuedAtBetweenAndUsername(LocalDateTime from, LocalDateTime to, String username);
 
-    Optional<RewardHistory> getFirstByUsernameOrderByIssuedAt(String username);
+    Optional<RewardHistory> getFirstByUsernameOrderByIssuedAtDesc(String username);
 
     List<RewardHistory> findRewardHistoriesByIssuedAtBetween(
             LocalDateTime from,
