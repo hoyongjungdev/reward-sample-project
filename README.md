@@ -1,3 +1,9 @@
+## 실행 환경
+- Java 17
+- Spring Boot 3.0.0
+- MySQL
+- React
+
 ## 특이 사항
 - Unit Test 작성 (RewardCalculationTests)
 - React를 사용한 Frontend 구현
@@ -8,7 +14,7 @@
 - Ubuntu 22.04 기준으로 작성한다.
 - Docker container 생성
 ```bash
-$ docker run --name musinsa-sample-ubuntu -d -it -p 8082:8082 -p 8081:8081 -p 4000:3306 ubuntu:22.04 bash
+$ docker run --name musinsa-sample-ubuntu -d -it -p 8082:8082 -p 8081:8081 -p 8083:3306 ubuntu:22.04 bash
 ```
 
 - Docker container 실행
