@@ -1,6 +1,7 @@
 import Header from "./Header";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {SERVER_HOST} from "./api";
 
 function Home() {
     const [notification, setNotification] = useState({
@@ -10,9 +11,16 @@ function Home() {
     });
 
     useEffect(() => {
-        axios.get("http://localhost:8080/notifications")
+        axios.get(SERVER_HOST + "/notifications")
             .then(function (response) {
                 setNotification(response.data.notifications[0])
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    alert('실패\n' + error.response.data['message'])
+                } else {
+                    alert('실패\n' + error.toString());
+                }
             });
     }, []);
 
