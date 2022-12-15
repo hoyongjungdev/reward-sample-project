@@ -21,6 +21,8 @@ public class RewardHistory {
 
     @Getter
     private LocalDateTime issuedAt;
+
+    @Getter
     private String username;
 
     @Getter

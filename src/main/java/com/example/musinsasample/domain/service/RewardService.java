@@ -10,12 +10,14 @@ import com.example.musinsasample.exception.DuplicateRewardException;
 import com.example.musinsasample.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +28,7 @@ public class RewardService {
     private final UserRepository userRepository;
 
     public void checkIfUserReceivedReward(String username, LocalDate today) {
-        if (rewardHistoryRepository.existsByIssuedAtAndUsername(
+        if (rewardHistoryRepository.existsByIssuedAtBetweenAndUsername(
                 today.atStartOfDay(), today.atTime(LocalTime.MAX), username
         )) {
             throw new DuplicateRewardException();
@@ -53,6 +55,14 @@ public class RewardService {
 
         claimReward(today);
         createRewardHistory(user, now);
+    }
+
+    public List<RewardHistory> getRewardHistories(LocalDate date, Sort.Direction direction) {
+        return rewardHistoryRepository.findRewardHistoriesByIssuedAtBetween(
+                date.atStartOfDay(),
+                date.atTime(LocalTime.MAX),
+                Sort.by(direction, "issuedAt")
+        );
     }
 
     private void claimReward(LocalDate today) {
