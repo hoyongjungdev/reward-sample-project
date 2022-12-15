@@ -44,63 +44,70 @@ function History() {
         setSort(e.target.value);
     }
 
-    return (<div>
-        <Header/>
+    return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="number"
-                    value={year}
-                    min={2010}
-                    max={2030}
-                    onChange={(e) => setYear(parseInt(e.target.value))}
-                />
-                <input
-                    type="number"
-                    value={month}
-                    min={1}
-                    max={12}
-                    onChange={(e) => setMonth(parseInt(e.target.value))}
-                />
-                <input
-                    type="number"
-                    value={day}
-                    min={1}
-                    max={31}
-                    onChange={(e) => setDay(parseInt(e.target.value))}
-                />
+            <Header/>
+            <div className="container">
+                <h2>보상 기록 조회하기</h2>
+                <form onSubmit={handleSubmit} id="history_form">
+                    <p>연월일:</p>
+                    <input
+                        type="number"
+                        value={year}
+                        min={2010}
+                        max={2030}
+                        onChange={(e) => setYear(parseInt(e.target.value))}
+                    />
+                    <input
+                        type="number"
+                        value={month}
+                        min={1}
+                        max={12}
+                        onChange={(e) => setMonth(parseInt(e.target.value))}
+                    />
+                    <input
+                        type="number"
+                        value={day}
+                        min={1}
+                        max={31}
+                        onChange={(e) => setDay(parseInt(e.target.value))}
+                    />
 
-                <select name="sort" id="sort" value={sort} onChange={handleSelect}>
-                    <option value="asc">오름차순</option>
-                    <option value="desc">내림차순</option>
-                </select>
+                    <p>정렬 순서:</p>
+                    <select name="sort" id="sort" value={sort} onChange={handleSelect}>
+                        <option value="asc">오름차순</option>
+                        <option value="desc">내림차순</option>
+                    </select>
 
-                <button type="submit">조회하기</button>
-            </form>
-        </div>
-        <div>
-            <table id="reward_histories">
-                <thead>
-                    <tr>
-                        <th>시간</th>
-                        <th>ID</th>
-                        <th>지급한 포인트</th>
-                        <th>연속 지급일</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {rewardHistories.map(rewardHistory => {
-                    return <tr>
-                        <td>{rewardHistory['issuedAt'].substring(11)}</td>
-                        <td>{rewardHistory['username']}</td>
-                        <td>{rewardHistory['amount']}</td>
-                        <td>{rewardHistory['consecutiveDay']}</td>
-                    </tr>
-                })}
-                </tbody>
-            </table>
-        </div>
-    </div>);
+                    <p></p>
+                    <button type="submit">조회하기</button>
+                </form>
+                <div>
+                    {rewardHistories.length > 0 &&
+                    <table id="reward_histories">
+                        <thead>
+                        <tr>
+                            <th>시간</th>
+                            <th>ID</th>
+                            <th>지급한 포인트</th>
+                            <th>연속 지급일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {rewardHistories.map(rewardHistory => {
+                            return <tr>
+                                <td>{rewardHistory['issuedAt'].substring(11)}</td>
+                                <td>{rewardHistory['username']}</td>
+                                <td>{rewardHistory['amount']}</td>
+                                <td>{rewardHistory['consecutiveDay']}</td>
+                            </tr>
+                        })}
+                        </tbody>
+                    </table>
+                    }
+                </div>
+            </div>
+        </div>);
 }
 
 export default History;

@@ -31,16 +31,20 @@ function Register() {
     return (
         <div>
             <Header/>
-            <div>
+            <div className="container">
+                <h2>회원가입</h2>
                 <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        value={username}
-                        placeholder="ID"
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-
-                    <button type="submit">회원가입</button>
+                    <p>
+                        <input
+                            type="text"
+                            value={username}
+                            placeholder="ID"
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </p>
+                    <p>
+                        <button type="submit">회원가입</button>
+                    </p>
                 </form>
             </div>
         </div>

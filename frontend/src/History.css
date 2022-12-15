@@ -5,3 +5,7 @@
 #reward_histories td {
     padding: 0.5rem;
 }
+
+#history_form {
+    margin: 2rem 0;
+}

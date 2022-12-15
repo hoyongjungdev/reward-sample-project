@@ -49,27 +49,32 @@ function Home() {
     return (
         <div>
             <Header/>
-            <h2>{notification.title}</h2>
-            <ul>
-                {notification.descriptions.map(
-                    (description, idx) => <li key={idx}>{description.line}
-                        <ul>{description.subline.map(
-                            (subline, idx) => <li key={idx}>{subline}</li>
-                        )}</ul>
-                    </li>
-                )}
-            </ul>
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        value={username}
-                        placeholder="ID"
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-
-                    <button type="submit">보상 지급 받기</button>
-                </form>
+            <div className="container">
+                <h2>{notification.title}</h2>
+                <ul>
+                    {notification.descriptions.map(
+                        (description, idx) => <li key={idx}>{description.line}
+                            <ul>{description.subline.map(
+                                (subline, idx) => <li key={idx}>{subline}</li>
+                            )}</ul>
+                        </li>
+                    )}
+                </ul>
+                <div>
+                    <form onSubmit={handleSubmit}>
+                        <p>
+                            <input
+                                type="text"
+                                value={username}
+                                placeholder="ID"
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </p>
+                        <p>
+                            <button type="submit">보상 지급 받기</button>
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
     );
