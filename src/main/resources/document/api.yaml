@@ -37,6 +37,55 @@ paths:
           $ref: '#/components/responses/400BadRequest'
         '404':
           $ref: '#/components/responses/404NotFound'
+  /rewards/histories:
+    get:
+      description: |
+        - getRewardHistories
+        - 보상 조회
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: true
+          description: 조회 일자
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          required: true
+          description: 정렬 기준
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  reward_histories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        issued_at:
+                          type: string
+                          format: date-time
+                          description: 지급 시간
+                        username:
+                          type: string
+                        amount:
+                          type: integer
+                          description: 지급한 포인트
+                        consecutive_day:
+                          type: integer
+                          description: 지급 연속 일자
   /users:
     post:
       description: |
