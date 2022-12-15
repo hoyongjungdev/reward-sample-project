@@ -44,6 +44,7 @@ $ exit
 ```bash
 $ ./mvnw clean package -DskipTests
 $ nohup java -jar -Dserver.port=8081 target/musinsasample-0.0.1-SNAPSHOT.jar &
+# http://localhost:8081 로 API call 해서 테스트 가능
 ```
 
 - 클라이언트 실행
@@ -51,6 +52,7 @@ $ nohup java -jar -Dserver.port=8081 target/musinsasample-0.0.1-SNAPSHOT.jar &
 $ cd frontend
 $ npm install
 $ nohup npm run start &
+# http://localhost:8082 접속 시 클라이언트 테스트 가능
 ```
 
 - 프로세스 중지
