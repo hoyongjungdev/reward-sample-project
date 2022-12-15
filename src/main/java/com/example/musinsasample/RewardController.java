@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,11 +35,12 @@ public class RewardController {
     public SuccessResponse issueReward(@RequestBody IssueRewardRequest request) {
         String username = request.username();
 
-        LocalDate today = timeProvider.getDate();
+        LocalDateTime now = timeProvider.getDateTime();
+        LocalDate today = now.toLocalDate();
 
         rewardService.checkIfUserReceivedReward(username, today);
         rewardService.createRewardCount(today);
-        rewardService.issueReward(username, today);
+        rewardService.issueReward(username, now);
 
         return new SuccessResponse(true);
     }

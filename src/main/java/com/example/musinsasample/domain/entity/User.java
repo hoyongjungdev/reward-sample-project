@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,30 +58,32 @@ public class User {
         this(null, username, 0);
     }
 
-    public RewardHistory receiveFirstReward(LocalDate date) {
-        return rewardWithDayOne(date);
+    public RewardHistory receiveFirstReward(LocalDateTime dateTime) {
+        return rewardWithDayOne(dateTime);
     }
 
-    public RewardHistory receiveRewardWithHistory(RewardHistory recentReward, LocalDate date) {
-        if (recentReward.getRewardDate().plusDays(1).isEqual(date)) {
+    public RewardHistory receiveRewardWithHistory(RewardHistory recentReward, LocalDateTime dateTime) {
+        LocalDate date = dateTime.toLocalDate();
+
+        if (recentReward.getDate().plusDays(1).isEqual(date)) {
             ConsecutiveDay consecutiveDay = recentReward.getConsecutiveDay().nextDay();
 
             int amount = calculateRewardAmount(consecutiveDay);
             point += amount;
 
-            return new RewardHistory(date, username, amount, consecutiveDay);
+            return new RewardHistory(dateTime, username, amount, consecutiveDay);
         } else {
-            return rewardWithDayOne(date);
+            return rewardWithDayOne(dateTime);
         }
     }
 
-    private RewardHistory rewardWithDayOne(LocalDate date) {
+    private RewardHistory rewardWithDayOne(LocalDateTime dateTime) {
         ConsecutiveDay day = new ConsecutiveDay(1);
 
         int amount = calculateRewardAmount(day);
         point += amount;
 
-        return new RewardHistory(date, username, amount, day);
+        return new RewardHistory(dateTime, username, amount, day);
     }
 
     private int calculateRewardAmount(ConsecutiveDay consecutiveDay) {

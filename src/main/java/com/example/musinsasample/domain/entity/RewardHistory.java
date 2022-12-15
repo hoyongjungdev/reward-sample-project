@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reward_histories")
@@ -19,7 +20,7 @@ public class RewardHistory {
     private Integer id;
 
     @Getter
-    private LocalDate rewardDate;
+    private LocalDateTime issuedAt;
     private String username;
 
     @Getter
@@ -32,10 +33,14 @@ public class RewardHistory {
     protected RewardHistory() {
     }
 
-    public RewardHistory(LocalDate rewardDate, String username, Integer amount, ConsecutiveDay consecutiveDay) {
-        this.rewardDate = rewardDate;
+    public RewardHistory(LocalDateTime issuedAt, String username, Integer amount, ConsecutiveDay consecutiveDay) {
+        this.issuedAt = issuedAt;
         this.username = username;
         this.amount = amount;
         this.consecutiveDay = consecutiveDay;
+    }
+
+    public LocalDate getDate() {
+        return issuedAt.toLocalDate();
     }
 }

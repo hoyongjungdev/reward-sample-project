@@ -7,6 +7,7 @@ import jakarta.annotation.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +17,7 @@ class RewardCalculationTests {
     void WhenUserGetFirstReward_PointIs100AndDayIs1() {
         User user = new User(1, "my_user", 0);
 
-        RewardHistory history = user.receiveFirstReward(LocalDate.of(2022, 12, 1));
+        RewardHistory history = user.receiveFirstReward(LocalDateTime.of(2022, 12, 1, 3, 0));
 
         assertThat(user.getPoint()).isEqualTo(100);
         assertThat(history.getConsecutiveDay()).isEqualTo(new ConsecutiveDay(1));
@@ -27,7 +28,7 @@ class RewardCalculationTests {
     void WhenUserGetNonconsecutiveSecondReward_PointIs100AndDayIs1() {
         User user = new User(1, "my_user", 100);
         RewardHistory rewardHistory = new RewardHistory(
-                LocalDate.of(2022, 11, 5),
+                LocalDateTime.of(2022, 11, 5, 3, 0),
                 "my_user",
                 100,
                 new ConsecutiveDay(1)
@@ -35,7 +36,7 @@ class RewardCalculationTests {
 
         RewardHistory history = user.receiveRewardWithHistory(
                 rewardHistory,
-                LocalDate.of(2022, 12, 1)
+                LocalDateTime.of(2022, 12, 1, 3, 0)
         );
 
         assertThat(user.getPoint()).isEqualTo(200);
@@ -47,7 +48,7 @@ class RewardCalculationTests {
     void WhenUserGetConsecutiveThirdReward_PointIs300AndDayIs3() {
         User user = new User(1, "my_user", 200);
         RewardHistory rewardHistory = new RewardHistory(
-                LocalDate.of(2022, 11, 5),
+                LocalDateTime.of(2022, 11, 5, 3, 0),
                 "my_user",
                 100,
                 new ConsecutiveDay(2)
@@ -55,7 +56,7 @@ class RewardCalculationTests {
 
         RewardHistory history = user.receiveRewardWithHistory(
                 rewardHistory,
-                LocalDate.of(2022, 11, 6)
+                LocalDateTime.of(2022, 11, 6, 3, 0)
         );
 
         assertThat(user.getPoint()).isEqualTo(600);
@@ -67,7 +68,7 @@ class RewardCalculationTests {
     void WhenUserBreaksConsecutiveInFourthDay_PointIs100AndDayIs1() {
         User user = new User(1, "my_user", 1500);
         RewardHistory rewardHistory = new RewardHistory(
-                LocalDate.of(2022, 11, 30),
+                LocalDateTime.of(2022, 11, 30, 3, 0),
                 "my_user",
                 400,
                 new ConsecutiveDay(3)
@@ -75,7 +76,7 @@ class RewardCalculationTests {
 
         RewardHistory history = user.receiveRewardWithHistory(
                 rewardHistory,
-                LocalDate.of(2022, 12, 2)
+                LocalDateTime.of(2022, 12, 2, 3, 0)
         );
 
         assertThat(user.getPoint()).isEqualTo(1600);
@@ -132,18 +133,18 @@ class RewardCalculationTests {
     }
 
     RewardHistory receiveRewardForConsecutiveDays(User user, LocalDate from, int days, @Nullable RewardHistory rewardHistory) {
-        LocalDate date = from;
+        LocalDateTime dateTime = from.atTime(3, 0);
 
         if (rewardHistory == null) {
-            rewardHistory = user.receiveFirstReward(date);
+            rewardHistory = user.receiveFirstReward(dateTime);
         } else {
-            rewardHistory = user.receiveRewardWithHistory(rewardHistory, date);
+            rewardHistory = user.receiveRewardWithHistory(rewardHistory, dateTime);
         }
 
         for (int i = 0; i < days - 1; i++) {
-            date = date.plusDays(1);
+            dateTime = dateTime.plusDays(1);
 
-            rewardHistory = user.receiveRewardWithHistory(rewardHistory, date);
+            rewardHistory = user.receiveRewardWithHistory(rewardHistory, dateTime);
         }
 
         return rewardHistory;

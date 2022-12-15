@@ -8,6 +8,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
@@ -18,6 +19,10 @@ public class TimeProvider {
 
     public LocalDate getDate() {
         return LocalDate.ofInstant(now(), ZoneId.of("+9"));
+    }
+
+    public LocalDateTime getDateTime() {
+        return LocalDateTime.ofInstant(now(), ZoneId.of("+9"));
     }
 
     private Instant now() {

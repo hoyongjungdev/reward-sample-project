@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 @Service
@@ -24,7 +26,9 @@ public class RewardService {
     private final UserRepository userRepository;
 
     public void checkIfUserReceivedReward(String username, LocalDate today) {
-        if (rewardHistoryRepository.existsByRewardDateAndUsername(today, username)) {
+        if (rewardHistoryRepository.existsByIssuedAtAndUsername(
+                today.atStartOfDay(), today.atTime(LocalTime.MAX), username
+        )) {
             throw new DuplicateRewardException();
         }
     }
@@ -43,10 +47,12 @@ public class RewardService {
     }
 
     @Transactional
-    public void issueReward(String username, LocalDate today) {
+    public void issueReward(String username, LocalDateTime now) {
         User user = getUserOrThrow(username);
+        LocalDate today = now.toLocalDate();
+
         claimReward(today);
-        createRewardHistory(user, today);
+        createRewardHistory(user, now);
     }
 
     private void claimReward(LocalDate today) {
@@ -55,16 +61,16 @@ public class RewardService {
         rewardCount.increaseRewardClaimed();
     }
 
-    private void createRewardHistory(User user, LocalDate today) {
+    private void createRewardHistory(User user, LocalDateTime now) {
         Optional<RewardHistory> recentRewardHistoryOptional
-                = rewardHistoryRepository.getFirstByUsernameOrderByRewardDateDesc(user.getUsername());
+                = rewardHistoryRepository.getFirstByUsernameOrderByIssuedAt(user.getUsername());
 
         RewardHistory rewardHistoryCreated;
 
         if (recentRewardHistoryOptional.isPresent()) {
-            rewardHistoryCreated = user.receiveRewardWithHistory(recentRewardHistoryOptional.get(), today);
+            rewardHistoryCreated = user.receiveRewardWithHistory(recentRewardHistoryOptional.get(), now);
         } else {
-            rewardHistoryCreated = user.receiveFirstReward(today);
+            rewardHistoryCreated = user.receiveFirstReward(now);
         }
 
         rewardHistoryRepository.save(rewardHistoryCreated);
