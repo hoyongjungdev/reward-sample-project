@@ -9,6 +9,7 @@ import com.example.musinsasample.domain.entity.RewardHistory;
 import com.example.musinsasample.domain.service.RewardService;
 import com.example.musinsasample.domain.service.UserService;
 import com.example.musinsasample.exception.ValidationException;
+import com.example.musinsasample.exception.WrongDateFormatException;
 import com.example.musinsasample.infra.TimeProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -54,8 +56,18 @@ public class RewardController {
     }
 
     @GetMapping("rewards/histories")
-    public GetRewardHistoriesResponse getRewardHistories(@RequestParam("date") String dateInput, @RequestParam("sort_by") String sortBy) {
-        LocalDate date = LocalDate.parse(dateInput);
+    public GetRewardHistoriesResponse getRewardHistories(
+            @RequestParam("date") String dateInput,
+            @RequestParam("sort_by") String sortBy
+    ) {
+        LocalDate date;
+
+        try {
+            date = LocalDate.parse(dateInput);
+        } catch (DateTimeParseException e) {
+            throw new WrongDateFormatException();
+        }
+
         Sort.Direction direction;
 
         if (sortBy.equals("asc")) {
